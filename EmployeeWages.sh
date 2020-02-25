@@ -8,6 +8,7 @@ empHour=0
 salary=0
 isPartTime=1
 isFullTime=2
+empCheck=$((RANDOM%3))
 
 #UC1:checked Employee is present or not
 attendance()
@@ -36,3 +37,20 @@ dailyWage()
   salary=$(($empRatePerHour*$empHour))
 }
 dailyWage
+
+solveUsingCase()
+{
+  case $empCheck in     #UC4:Solved using case statement
+	$isPartTime)
+		empHour=4
+		;;
+	$isFullTime)
+		empHour=8
+		;;
+  	*)
+   		empHour=0
+		;;
+  esac
+  salary=$(($empRatePerHour*$empHour))
+}
+solveUsingCase
