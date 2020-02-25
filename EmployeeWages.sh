@@ -12,7 +12,7 @@ workingDaysPerMonth=20
 #Variables
 empHour=0
 totalEmpHour=0
-totalWorkingDays=0
+WorkingDays=0
 salary=0
 empCheck=$((RANDOM%3))
 totalSalaryPerMonth=0
@@ -62,17 +62,27 @@ function getWorkingHours()
      echo $empHour
 }
 
+#UC8: Daily wage with total wage
+calculateWage()
+{
+  empHour=$1
+  wage=$(($empHour*$empRatePerHour))
+  echo $wage
+}
+
 #UC5: total wages per month
 wagesPerMonth()         
 {
-  while [[ $totalEmpHour -lt $maxHourInMonth && $totalWorkingDays -lt $workingDaysPerMonth ]]
+  while [[ $totalEmpHour -lt $maxHourInMonth && $WorkingDays -lt $workingDaysPerMonth ]]
   do
-     ((totalWorkingDays++))
+     ((WorkingDays++))
      empHour=$( getWorkingHours $((RANDOM%3)) )
      totalEmpHour=$(($totalEmpHour+$empHour))
+     dailyWage[workingDays]=$( calculateWage $empHour )
 
   done
 
   totalSalary=$(($totalEmpHour*$empRatePerHour))
+  echo "Daily wage: " ${dailyWage[@]}
 }
 wagesPerMonth
