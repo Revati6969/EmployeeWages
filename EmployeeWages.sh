@@ -1,15 +1,20 @@
 #!/bin/bash -x
 echo "Welcome to Employee Wages Computation"
 
-#variables
+#Constant
 isPresent=1
-empRatePerHour=20
-empHour=0
-salary=0
 isPartTime=1
 isFullTime=2
+empRatePerHour=20
+maxHourInMonth=100
+workingDaysPerMonth=20
+
+#Variables
+empHour=0
+totalEmpHour=0
+totalWorkingDays=0
+salary=0
 empCheck=$((RANDOM%3))
-workingDaysPerMonth=22
 totalSalaryPerMonth=0
 
 #UC1:checked Employee is present or not
@@ -43,21 +48,24 @@ dailyWage
 #UC5: total wages per month
 wagesPerMonth()         
 {
-	for (( index=1; index<=workingDaysPerMonth; index++ ))
-	do
-		case $empCheck in     #UC4:Solved using case statement
-			$isPartTime)
-				empHour=4
-			;;
-			$isFullTime)
-				empHour=8
-			;;
-  			*)
-   			empHour=0
-			;;
-  		esac
-		salary=$(($empRatePerHour*$empHour))
-		totalSalaryPerMonth=$(($totalSalaryPerMonth+$salary))
-	done
+  while [[ $totalEmpHour -lt $maxHourInMonth && $totalWorkingDays -lt $workingDaysPerMonth ]]
+  do
+     ((totalWorkingDays++))
+     case $empCheck in     #UC4:Solved using case statement
+	$isPartTime)
+		empHour=4
+		;;
+	$isFullTime)
+		empHour=8
+		;;
+  	*)
+   		empHour=0
+		;;
+     esac
+     totalEmpHour=$(($totalEmpHour+$empHour))
+
+  done
+
+  totalSalary=$(($totalEmpHour*$empRatePerHour))
 }
 wagesPerMonth
