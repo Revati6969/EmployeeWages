@@ -45,13 +45,10 @@ dailyWage()
 }
 dailyWage
 
-#UC5: total wages per month
-wagesPerMonth()         
+#UC7:Refactored to get work hours
+function getWorkingHours()
 {
-  while [[ $totalEmpHour -lt $maxHourInMonth && $totalWorkingDays -lt $workingDaysPerMonth ]]
-  do
-     ((totalWorkingDays++))
-     case $empCheck in     #UC4:Solved using case statement
+   case $1 in     #UC4:Solved using case statement
 	$isPartTime)
 		empHour=4
 		;;
@@ -62,6 +59,16 @@ wagesPerMonth()
    		empHour=0
 		;;
      esac
+     echo $empHour
+}
+
+#UC5: total wages per month
+wagesPerMonth()         
+{
+  while [[ $totalEmpHour -lt $maxHourInMonth && $totalWorkingDays -lt $workingDaysPerMonth ]]
+  do
+     ((totalWorkingDays++))
+     empHour=$( getWorkingHours $((RANDOM%3)) )
      totalEmpHour=$(($totalEmpHour+$empHour))
 
   done
