@@ -1,6 +1,8 @@
 #!/bin/bash -x
 echo "Welcome to Employee Wages Computation"
 
+declare -A Emp
+
 #Constant
 isPresent=1
 isPartTime=1
@@ -10,6 +12,7 @@ maxHourInMonth=100
 workingDaysPerMonth=20
 
 #Variables
+day=1
 empHour=0
 totalEmpHour=0
 WorkingDays=0
@@ -22,28 +25,26 @@ attendance()
 {
   if [[ $((RANDOM%2)) -eq $isPresent ]]
   then
-       echo "Employee is present"
+       attendenceflag=1
   else
-       echo "Employee is not present"
+       attendenceflag=0
   fi
 }
-attendance
 
 #UC2:Daily wages of employee
 dailyWage()
 {
-  if [[ $((RANDOM%3)) -eq $isPartTime ]]    #UC3:Added partTime employee and wage
+  if [[ $attendanceflag=1 ]]
   then
-       empHour=4
-  elif [[ $((RANDOM%3)) -eq $isFullTime ]]
-  then
-       empHour=8
-  else
-       empHour=0
-  fi
+      if [[ $((RANDOM%2)) -eq $isPartTime ]]    #UC3:Added partTime employee and wage
+      then
+          empHour=4
+      else [[ $((RANDOM%2)) -eq $isFullTime ]]
+          empHour=8
+      fi
   salary=$(($empRatePerHour*$empHour))
+  fi
 }
-dailyWage
 
 #UC7:Refactored to get work hours
 function getWorkingHours()
@@ -70,19 +71,17 @@ calculateWage()
   echo $wage
 }
 
-#UC5: total wages per month
-wagesPerMonth()         
+finalResult() 
 {
-  while [[ $totalEmpHour -lt $maxHourInMonth && $WorkingDays -lt $workingDaysPerMonth ]]
-  do
-     ((WorkingDays++))
-     empHour=$( getWorkingHours $((RANDOM%3)) )
-     totalEmpHour=$(($totalEmpHour+$empHour))
-     dailyWage[workingDays]=$( calculateWage $empHour )
+echo "Days Wages"
+while [[ day -le 20 ]]
+do
+	attendance
+	dailyWage
+	Emp[day]=$salary
+	echo "$day--> ${Emp[day]}"
+	day=$(($day+1))
 
-  done
-
-  totalSalary=$(($totalEmpHour*$empRatePerHour))
-  echo "Daily wage: " ${dailyWage[@]}
+done
 }
-wagesPerMonth
+finalResult
