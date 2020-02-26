@@ -8,17 +8,13 @@ isPresent=1
 isPartTime=1
 isFullTime=2
 empRatePerHour=20
-maxHourInMonth=100
-workingDaysPerMonth=20
 
 #Variables
 day=1
 empHour=0
-totalEmpHour=0
 WorkingDays=0
 salary=0
 empCheck=$((RANDOM%3))
-totalSalaryPerMonth=0
 
 #UC1:checked Employee is present or not
 attendance()
